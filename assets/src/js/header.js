@@ -175,6 +175,74 @@ const setMobileTabsMenuScroll = () => {
     document.addEventListener(eventName, toggleMobileTabsMenu);
   });
 };
+const addNavMenuBehaviour = () => {
+
+  document.querySelectorAll('.menu-item').forEach(item => {
+
+    const submenu = document.querySelector('.nav-submenu');
+    const clientRect = item.getBoundingClientRect();
+
+    item.addEventListener('mouseover', evt => {
+      evt.preventDefault();
+
+      // Reset all styles from menu items
+      document.querySelectorAll('.menu-item').forEach(it => {
+        it.classList.remove('active');
+      });
+      item.classList.add('active');
+
+
+      // const menu = getListByMenuId(evt.currentTarget.dataset.menu);
+      const menu = document.querySelector(`ul[data-menu="${evt.currentTarget.dataset.menu}"]`);
+
+      document.querySelectorAll(`ul[data-menu]`).forEach(m => {
+        m.classList.remove('show');
+
+        if(menu && menu.dataset.menu === m.dataset.menu) {
+          m.classList.add('show');
+        }
+      });
+
+      // Show main submenu wrapper
+      if(submenu) {
+        submenu.classList.add('show');
+
+        // 8px is the margin with the main navigation
+        submenu.style.top = `${8 + clientRect.y + clientRect.height}px`;
+        submenu.style.left = `${8 + clientRect.x}px`;
+
+        submenu.addEventListener('mouseout', evt => {
+          evt.preventDefault();
+          // evt.currentTarget.classList.remove('show');
+        });
+      }
+    });
+  });
+
+
+  // Add mouse over listener to all subitems inside menu
+    document.querySelectorAll('.nav-submenu li').forEach(element => {
+      element.addEventListener('mouseover', evt => {
+        evt.preventDefault();
+        console.log('Mouse over', evt.currentTarget)
+        const clientRect = evt.currentTarget.getBoundingClientRect();
+        const list = document.querySelector(`.list-wrapper[data-menu="${evt.currentTarget.dataset.menu}"]`);
+
+        if(list) {
+          list.classList.add('show');
+        }
+      });
+
+      element.addEventListener('mouseout', evt => {
+        const list = document.querySelector(`.list-wrapper[data-menu="${evt.currentTarget.dataset.menu}"]`);
+
+        if(list) {
+          list.classList.remove('show');
+        }
+      });
+    });
+
+}
 
 export const setupHeader = () => {
   const toggleElementClasses = [
@@ -228,4 +296,8 @@ export const setupHeader = () => {
   });
 
   setMobileTabsMenuScroll();
+  if(window.innerWidth >= 769) {
+    addNavMenuBehaviour();
+  }
 };
+

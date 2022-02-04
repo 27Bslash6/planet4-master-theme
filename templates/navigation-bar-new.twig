@@ -24,7 +24,7 @@
 		<nav id="nav-menu" class="nav-menu">
 			<ul>
 				{% for key,item in navbar_menu_items %}
-				<li class="nav-item {{ item.class }} {{ item == item.current ? 'active' : '' }}">
+				<li class="nav-item {{ item.class }} {{ item == item.current ? 'active' : '' }}" data-menu={{ item.ID }}>
 					{% if fn('get_post_meta', item.ID, '_menu_item_object_id', true ) == act_page_id %}
 						{% set link_ga_action = 'Act' %}
 					{% elseif fn('get_post_meta', item.ID, '_menu_item_object_id', true ) == explore_page_id %}
@@ -42,18 +42,69 @@
 					</a>
 				</li>
 				{% endfor %}
-				<li class="nav-item nav-donate">
-					<a
-						class="btn btn-donate"
-						href="{{ donatelink }}"
-						data-ga-category="Menu Navigation"
-						data-ga-action="Donate"
-						data-ga-label="{{ page_category }}">
-							{{ donatetext }}
-					</a>
-				</li>
 			</ul>
 		</nav>
+
+		<nav class='nav-submenu'>
+			{% for key,item in navbar_menu_items %}
+				{% if item.children is not empty %}
+					{% set menuId = item.ID %}
+					<ul data-menu={{ item.ID }} data-parent-menu={{ item.ID }}>
+						{% for key,item in item.children %}
+							<li data-menu={{ item.ID }}>
+								<a
+									class="nav-link"
+									href="{{ item.get_link }}"
+									data-ga-category="Menu Navigation"
+									data-ga-action="{{ link_ga_action }}"
+									data-ga-label="{{ page_category }}">
+										{{ item.title }}
+								</a>
+								{% if item.children is not empty %}
+									{% set menuId = item.ID %}
+									<div class='list-wrapper' data-menu={{ item.ID }} data-parent-menu={{ menuId }}>
+										<ul>
+											{% for key,item in item.children %}
+											<li data-menu={{ item.ID }}>
+												<a
+													class="nav-link"
+													href="{{ item.get_link }}"
+													data-ga-category="Menu Navigation"
+													data-ga-action="{{ link_ga_action }}"
+													data-ga-label="{{ page_category }}">
+														{{ item.title }}
+												</a>
+												{% if item.children is not empty %}
+													{% set menuId = item.ID %}
+													<div class='list-wrapper' data-menu={{ item.ID }} data-parent-menu={{ menuId }}>
+														<ul>
+															{% for key,item in item.children %}
+															<li data-menu={{ item.ID }}>
+																<a
+																	class="nav-link"
+																	href="{{ item.get_link }}"
+																	data-ga-category="Menu Navigation"
+																	data-ga-action="{{ link_ga_action }}"
+																	data-ga-label="{{ page_category }}">
+																		{{ item.title }}
+																</a>
+															</li>
+															{% endfor %}
+														</ul>
+													</div>
+												{% endif %}
+											</li>
+											{% endfor %}
+										</ul>
+									</div>
+								{% endif %}
+							</li>
+						{% endfor %}
+					</ul>
+				{% endif %}
+			{% endfor %}
+		</nav>
+
 		{% set search_icon = 'search'|svgicon %}
 		{% set search_input_id = 'search_input' %}
 		{% set data_ga_attrs = 'data-ga-category="Menu Navigation" data-ga-action="Search" data-ga-label="' ~ page_category ~ '"' %}

@@ -207,6 +207,37 @@ $navbar-default-height: 60px;
   color: inherit;
   font-size: $font-base-size;
   font-weight: 700;
+  position: relative;
+
+  &::after {
+    content: "";
+    background: $gp-green;
+    position: absolute;
+    width: 0;
+    height: 4px;
+    bottom: 0;
+    left: 50%;
+  }
+
+  &.active {
+    &::after {
+      content: "";
+      background: $gp-green;
+      position: absolute;
+      width: 100%;
+      height: 4px;
+      bottom: 0;
+      left: 0;
+    }
+  }
+
+  &:hover {
+    &::after {
+      transition: all 0.1s ease-in;
+      width: 100%;
+      left: 0;
+    }
+  }
 
   @include large-and-up {
     line-height: $menu-height;
@@ -340,6 +371,103 @@ a.nav-link:hover:before,
 
   @include large-and-up {
     display: none;
+  }
+}
+
+.nav-submenu {
+  position: fixed;
+  top: 100px;
+  z-index: 999;
+
+  ul {
+    list-style-type: none;
+    padding: 16px 0;
+    flex-direction: column;
+    height: fit-content;
+    background: white;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+    border-radius: 4px;
+  }
+
+  & > ul {
+    width: 193px;
+    position: absolute;
+    display: none;
+    transition: left 250ms ease-in;
+
+    li {
+      width: 100%;
+      text-align: left;
+      white-space: nowrap;
+
+      a {
+        text-decoration: none;
+        color: $grey-80;
+        padding: 14px 24px;
+
+
+        &:hover {
+          text-decoration: inherit;
+          color: $grey-80;
+        }
+      }
+
+      // Applied to all sub lists
+      .list-wrapper {
+        top: 0;
+        padding-left: 8px;
+        position: absolute;
+        display: none;
+        left: 100%;
+        min-height: 100%;
+
+        &.show {
+          display: flex;
+        }
+      }
+
+      &:hover {
+        background: #ECECEC;
+      }
+    }
+
+    &.show {
+      display: flex;
+    }
+  }
+
+  &.show {
+    display: flex;
+    position: fixed;
+    top: 0;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+    border-radius: 4px;
+    transition: left 250ms ease-in;
+    z-index: 999;
+  }
+
+  @include medium-and-up {
+    display: none;
+  }
+}
+
+.nav-subitem {
+  padding: 14px 24px;
+  width: 100%;
+  text-align: left;
+
+  .nav-link {
+    text-decoration: none;
+    color: $grey-80;
+
+    &:hover {
+      text-decoration: inherit;
+      color: inherit;
+    }
+  }
+
+  &:hover {
+    background: #ECECEC;
   }
 }
 
