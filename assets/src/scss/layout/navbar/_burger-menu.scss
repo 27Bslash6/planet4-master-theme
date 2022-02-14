@@ -1,0 +1,176 @@
+#burger-menu {
+  position: fixed;
+  top: 38px;
+  inset-inline-start: -100%;
+  height: 100vh;
+  padding: 24px 40px;
+  z-index: 9999;
+  overflow-y: auto;
+  background: $dark-blue;
+
+  &.open {
+    inset-inline-start: 0;
+    transition: inset-inline-start 0.2s ease-out;
+
+    @supports not (inset-inline-start: 0) {
+      transform: translateX(0);
+      transition: transform 0.2s ease-out;
+
+      html[dir="rtl"] & {
+        transform: translateX(0);
+      }
+    }
+
+    ~ .top-navigation-overlay {
+      display: block;
+    }
+  }
+
+  nav > ul {
+    list-style-type: none;
+    margin: 0;
+    padding-inline: 0 0;
+    text-align: start;
+  }
+
+  .accordion-menu {
+    max-height: 0;
+    transition: max-height 0.5s ease-out;
+    overflow: hidden;
+    padding-inline-start: 20px;
+
+    &.show {
+      max-height: 1000px;
+      transition: max-height 0.5s ease-in;
+    }
+  }
+
+  .admin-bar & {
+    padding-bottom: 46px;
+    top: 46px;
+
+    @media (min-width: 783px) {
+      padding-bottom: 32px;
+      top: 32px;
+    }
+  }
+
+   @include small-and-less {
+    width: 100vw;
+    inset-inline-start: -100vw;
+
+    @supports not (inset-inline-start: -100vw) {
+      transform: translateX(-100vw);
+      transition: transform 0.2s ease-out;
+
+      html[dir="rtl"] & {
+        transform: translateX(100vw);
+      }
+    }
+
+    &.open {
+      @supports not (inset-inline-start: 0) {
+        transform: translateX(0);
+        transition: transform 0.2s ease-out;
+
+        html[dir="rtl"] & {
+          transform: translateX(0);
+        }
+      }
+    }
+  }
+
+  @include small-to-large {
+    inset-inline-start: -400px;
+    transition: inset-inline-start 0.2s ease-in;
+    width: 400px;
+
+    @supports not (inset-inline-start: -400px) {
+      transform: translateX(-400px);
+      transition: transform 0.2s ease-in;
+
+      html[dir="rtl"] & {
+        transform: translateX(400px);
+      }
+    }
+  }
+}
+
+.burger-menu-item {
+  //   color: inherit;
+  //   font-size: $font-base-size;
+  //   font-weight: 700;
+  width: 100%;
+
+  .item-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .collapsable-btn {
+    width: 30px;
+    height: 30px;
+    background: transparent;
+    border: none;
+
+    &::before {
+      content: "";
+      height: 12px;
+      width: 8px;
+      display: inline-block;
+      mask-image: url("../../images/chevron.svg");
+      mask-repeat: no-repeat;
+      mask-size: contain;
+      mask-position: center;
+      background-repeat: no-repeat;
+      background-color: currentColor;
+      transform: rotate(90deg);
+      transition: transform 0.3s linear;
+    }
+
+    &.show {
+      &::before {
+        transform: rotate(-90deg);
+      }
+    }
+  }
+
+}
+
+.nav-menu-close {
+  background-color: var(--top-navigation--color, $white);
+  border: none;
+  display: block;
+  height: 68px;
+  inset-inline-end: 0;
+  mask: url("../../images/cross.svg") 50% 50%/16px 16px no-repeat;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 68px;
+  z-index: 5;
+
+  @supports not (inset-inline-end: 0) {
+    right: 0;
+    left: auto;
+
+    html[dir="rtl"] & {
+      left: 0;
+      right: auto;
+    }
+  }
+}
+
+#burger-menu .top-side {
+  border-bottom: solid 1px #D8D8D8;
+}
+
+#burger-menu .site-logo {
+  margin-inline-start: 0;
+}
+
+#burger-menu .site-logo img {
+  height: 23px;
+}

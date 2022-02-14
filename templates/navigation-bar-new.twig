@@ -11,7 +11,7 @@
 		data-ga-label="{{ page_category }}"
 		aria-expanded="false"
 		data-bs-toggle="open"
-		data-bs-target="#nav-main">
+		data-bs-target="#burger-menu">
 		{{ 'menu'|svgicon|replace({'<svg': "<svg " ~ data_ga_attrs })|raw }}
 		<span class="visually-hidden">
 			{{ __( 'Menu', 'planet4-master-theme' ) }}
@@ -172,5 +172,6 @@
 	</div>
 	{% endif %}
 	<div class="top-navigation-overlay"></div>
+	{% include 'burger-menu.twig' %}
 	{% include 'country_selector_banner.twig' ignore missing %}
 </section>
