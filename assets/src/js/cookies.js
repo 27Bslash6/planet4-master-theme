@@ -30,22 +30,18 @@ export const setupCookies = () => {
     });
   };
 
-  // If Google Consent Mode is enabled, set default ad storage and analytics storage to 'denied' if needed
-  if (ENABLE_GOOGLE_CONSENT_MODE) {
-    const defaultCookieConsentNeeded = !document.cookie.includes('greenpeace=') && !document.cookie.includes('no_track');
+  const defaultGoogleConsent = () => {
+    gtag('consent', 'default', {
+      'ad_storage': 'denied',
+      ...ENABLE_ANALYTICAL_COOKIES && { 'analytics_storage': 'denied' },
+    });
 
-    if (defaultCookieConsentNeeded) {
-      gtag('consent', 'default', {
-        'ad_storage': 'denied',
-        ...ENABLE_ANALYTICAL_COOKIES && { 'analytics_storage': 'denied' },
-      });
-      dataLayer.push({
-        'event' : 'defaultConsent',
-        'ad_storage': 'denied',
-        ...ENABLE_ANALYTICAL_COOKIES && { 'analytics_storage': 'denied' },
-      });
-    }
-  }
+    dataLayer.push({
+      'event' : 'defaultConsent',
+      'ad_storage': 'denied',
+      ...ENABLE_ANALYTICAL_COOKIES && { 'analytics_storage': 'denied' },
+    });
+  };
 
   const createCookie = (name, value, days) => {
     let date = new Date();
@@ -76,6 +72,26 @@ export const setupCookies = () => {
   const nro = document.body.dataset.nro;
   const greenpeace = readCookie('greenpeace');
   const noTrack = readCookie('no_track');
+
+  // If Google Consent Mode is enabled,
+  // set default ad storage and analytics storage to 'denied' as first action on every page until consent is given.
+  // If consent given, update consent on every page.
+  if (ENABLE_GOOGLE_CONSENT_MODE) {
+    const marketing_consent = noTrack === null
+      && cookie !== null
+      && [NECESSARY_MARKETING, NECESSARY_ANALYTICAL_MARKETING].includes(greenpeace);
+
+    if (marketing_consent) {
+      // If user consents, update on every page.
+      updateGoogleConsent('ad_storage', true);
+      if (ENABLE_ANALYTICAL_COOKIES) {
+        updateGoogleConsent('analytics_storage', true);
+      }
+    } else {
+      // If user has not, default to denied on every page.
+      defaultGoogleConsent();
+    }
+  }
 
   const showCookiesBox = () => {
     if (cookiesBox) {
