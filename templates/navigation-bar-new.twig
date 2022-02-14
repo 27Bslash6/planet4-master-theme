@@ -40,69 +40,28 @@
 						data-ga-label="{{ page_category }}">
 							{{ item.title }}
 					</a>
+
+					{% if item.children is not empty %}
+						<nav class='nav-submenu' data-menu={{ item.ID }}>
+							<ul data-menu={{ item.ID }} data-parent-menu={{ item.ID }}>
+							{% for key,item in item.children %}
+								<li data-menu={{ item.ID }}>
+									<a
+										class="nav-link"
+										href="{{ item.get_link }}"
+										data-ga-category="Menu Navigation"
+										data-ga-action="{{ link_ga_action }}"
+										data-ga-label="{{ page_category }}">
+											{{ item.title }}
+									</a>
+								</li>
+							{% endfor %}
+							</ul>
+						</nav>
+					{% endif %}
 				</li>
 				{% endfor %}
 			</ul>
-		</nav>
-
-		<nav class='nav-submenu'>
-			{% for key,item in navbar_menu_items %}
-				{% if item.children is not empty %}
-					{% set menuId = item.ID %}
-					<ul data-menu={{ item.ID }} data-parent-menu={{ item.ID }}>
-						{% for key,item in item.children %}
-							<li data-menu={{ item.ID }}>
-								<a
-									class="nav-link"
-									href="{{ item.get_link }}"
-									data-ga-category="Menu Navigation"
-									data-ga-action="{{ link_ga_action }}"
-									data-ga-label="{{ page_category }}">
-										{{ item.title }}
-								</a>
-								{% if item.children is not empty %}
-									{% set menuId = item.ID %}
-									<div class='list-wrapper' data-menu={{ item.ID }} data-parent-menu={{ menuId }}>
-										<ul>
-											{% for key,item in item.children %}
-											<li data-menu={{ item.ID }}>
-												<a
-													class="nav-link"
-													href="{{ item.get_link }}"
-													data-ga-category="Menu Navigation"
-													data-ga-action="{{ link_ga_action }}"
-													data-ga-label="{{ page_category }}">
-														{{ item.title }}
-												</a>
-												{% if item.children is not empty %}
-													{% set menuId = item.ID %}
-													<div class='list-wrapper' data-menu={{ item.ID }} data-parent-menu={{ menuId }}>
-														<ul>
-															{% for key,item in item.children %}
-															<li data-menu={{ item.ID }}>
-																<a
-																	class="nav-link"
-																	href="{{ item.get_link }}"
-																	data-ga-category="Menu Navigation"
-																	data-ga-action="{{ link_ga_action }}"
-																	data-ga-label="{{ page_category }}">
-																		{{ item.title }}
-																</a>
-															</li>
-															{% endfor %}
-														</ul>
-													</div>
-												{% endif %}
-											</li>
-											{% endfor %}
-										</ul>
-									</div>
-								{% endif %}
-							</li>
-						{% endfor %}
-					</ul>
-				{% endif %}
-			{% endfor %}
 		</nav>
 
 		{% set search_icon = 'search'|svgicon %}
@@ -176,15 +135,6 @@
 				</ul>
 			</nav>
 		{% endif %}
-		<button class="nav-menu-close" type="button"
-			aria-label="{{ __( 'Close navigation menu', 'planet4-master-theme' ) }}"
-			aria-expanded="false"
-			data-bs-toggle="open"
-			data-bs-target="#nav-main">
-			<span class="visually-hidden">
-				{{ __( 'Close navigation menu', 'planet4-master-theme' ) }}
-			</span>
-		</button>
 	</div>
 	<div class="nav-search-toggle-container medium-and-less">
 		<button class="nav-search-toggle" type="button"
