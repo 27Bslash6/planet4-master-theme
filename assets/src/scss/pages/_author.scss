@@ -14,15 +14,19 @@
   }
 
   .author-image {
-    width: 100%;
-    text-align: center;
     flex-shrink: 0;
+    margin: 0 auto;
 
-    @include small-and-up {
-      _-- {
+    _-- {
+      max-width: 50%;
+
+      @include small-and-up {
         width: 300px;
       }
-      overflow: hidden;
+    }
+
+    img {
+      width: 100%;
     }
   }
 
