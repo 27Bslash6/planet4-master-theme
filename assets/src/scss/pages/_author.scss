@@ -19,8 +19,9 @@
     flex-shrink: 0;
 
     @include small-and-up {
-      width: 300px;
-      height: 300px;
+      _-- {
+        width: 300px;
+      }
       overflow: hidden;
     }
   }
@@ -28,7 +29,6 @@
   .author-pic {
     border-radius: 50%;
     object-fit: cover;
-    max-height: 300px;
   }
 
   // Search uses absolutely positioned buttons, for absolutely no reason. The button effectively is
