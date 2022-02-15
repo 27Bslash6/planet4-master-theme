@@ -1,29 +1,33 @@
 .author {
+  .page-header {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+
+    @include medium-and-up {
+      flex-wrap: nowrap;
+    }
+  }
+
   .search-result-list-item {
     font-family: $roboto;
   }
 
-  .author-info {
-    .author-image {
-      width: auto;
+  .author-image {
+    width: 100%;
+    text-align: center;
+    flex-shrink: 0;
 
-      @include small-and-up {
-        width: 300px;
-        height: 300px;
-        overflow: hidden;
-      }
-
-      img {
-        width: auto;
-
-        @include small-and-up {
-          width: 100%;
-        }
-      }
+    @include small-and-up {
+      width: 300px;
+      height: 300px;
+      overflow: hidden;
     }
   }
 
-  .author-bio {
-    margin-top: 32px;
+  .author-pic {
+    border-radius: 50%;
+    object-fit: cover;
+    max-height: 300px;
   }
 }
