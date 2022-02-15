@@ -325,20 +325,6 @@ a.nav-link:hover:before,
   }
 }
 
-.top-navigation-overlay {
-  display: none;
-  background: $black;
-  height: 100%;
-  opacity: 0.5;
-  overflow: hidden;
-  overflow-y: scroll;
-  pointer-events: all;
-  position: fixed;
-  top: 0;
-  width: calc(100% + 20px);
-  z-index: 4;
-}
-
 .no-scroll-nav-open {
   @include medium-and-less {
     overflow-y: hidden;

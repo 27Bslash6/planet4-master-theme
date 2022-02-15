@@ -165,12 +165,28 @@
 
 #burger-menu .top-side {
   border-bottom: solid 1px #D8D8D8;
+  padding-bottom: 24px;
 }
 
 #burger-menu .site-logo {
   margin-inline-start: 0;
+  line-height: 1;
 }
 
 #burger-menu .site-logo img {
   height: 23px;
+}
+
+.top-navigation-overlay {
+  display: none;
+  background: $black;
+  height: 100%;
+  opacity: 0.5;
+  overflow: hidden;
+  overflow-y: scroll;
+  pointer-events: all;
+  position: fixed;
+  top: 0;
+  width: calc(100% + 20px);
+  z-index: 4;
 }
