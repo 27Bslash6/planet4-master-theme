@@ -227,6 +227,19 @@ export const setupHeader = () => {
     }
   });
 
+  /**
+   * Setup max height to submenues.
+   * The limits should be 6 for scrolleable and 10 for maximum into the list
+   */
+  const setupSubmenu = () => {
+    document.querySelectorAll('.nav-submenu ul').forEach(list => {
+      if(list.children.length >= 6) {
+        list.parentElement.classList.add('scrolleable');
+      }
+    })
+  };
+
   setMobileTabsMenuScroll();
+  setupSubmenu();
 };
 

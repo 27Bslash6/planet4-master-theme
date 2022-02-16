@@ -3,10 +3,10 @@
   top: 38px;
   inset-inline-start: -100%;
   height: 100vh;
-  padding: 24px 40px;
+  padding: 40px 24px;
   z-index: 9999;
   overflow-y: auto;
-  background: $dark-blue;
+  background: var(--top-navigation--background, $dark-blue);
 
   &.open {
     inset-inline-start: 0;
@@ -23,10 +23,27 @@
 
     ~ .top-navigation-overlay {
       display: block;
+
+      @include large-and-up {
+        display: none;
+      }
     }
   }
 
-  nav > ul {
+  a.nav-link {
+    font-size: 24px;
+  }
+
+  ul {
+    padding-inline-start: 0;
+    list-style: none;
+  }
+
+  & > nav {
+    padding-top: 4px;
+  }
+
+  & > nav > ul {
     list-style-type: none;
     margin: 0;
     padding-inline: 0 0;
@@ -38,6 +55,11 @@
     transition: max-height 0.5s ease-out;
     overflow: hidden;
     padding-inline-start: 20px;
+
+    a.nav-link {
+      font-size: 20px;
+      font-weight: 400;
+    }
 
     &.show {
       max-height: 1000px;
@@ -52,6 +74,14 @@
     @media (min-width: 783px) {
       padding-bottom: 32px;
       top: 32px;
+    }
+  }
+
+  .nav-languages {
+    width: 100%;
+
+    ul {
+      margin-inline: 0;
     }
   }
 
@@ -94,12 +124,16 @@
       }
     }
   }
+
+  @include large-and-up {
+    display: none;
+  }
 }
 
 .burger-menu-item {
-  //   color: inherit;
-  //   font-size: $font-base-size;
-  //   font-weight: 700;
+  color: inherit;
+  font-size: $font-base-size;
+  font-weight: 700;
   width: 100%;
 
   .item-wrapper {
@@ -136,20 +170,19 @@
       }
     }
   }
-
 }
 
 .nav-menu-close {
   background-color: var(--top-navigation--color, $white);
   border: none;
   display: block;
-  height: 68px;
+  height: 30px;
+  width: 30px;
   inset-inline-end: 0;
-  mask: url("../../images/cross.svg") 50% 50%/16px 16px no-repeat;
+  mask: url("../../images/cross.svg") 50% 50%/24px 24px no-repeat;
   position: absolute;
-  top: 0;
-  right: 0;
-  width: 68px;
+  top: 24px;
+  right: 24px;
   z-index: 5;
 
   @supports not (inset-inline-end: 0) {
@@ -164,8 +197,7 @@
 }
 
 #burger-menu .top-side {
-  border-bottom: solid 1px #D8D8D8;
-  padding-bottom: 24px;
+  margin-bottom: 8px;
 }
 
 #burger-menu .site-logo {
