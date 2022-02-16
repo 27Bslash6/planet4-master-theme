@@ -15,7 +15,10 @@
 
   .author-image {
     flex-shrink: 0;
-    margin: 0 auto;
+
+    @include mobile-only {
+      margin: 0 auto;
+    }
 
     _-- {
       max-width: 50%;
