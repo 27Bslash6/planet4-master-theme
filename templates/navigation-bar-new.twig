@@ -24,7 +24,7 @@
 		<nav id="nav-menu" class="nav-menu">
 			<ul>
 				{% for key,item in navbar_menu_items %}
-				<li class="nav-item {{ item.class }} {{ item == item.current ? 'active' : '' }}" data-menu={{ item.ID }}>
+				<li class="nav-item {{ item.class }} {{ item == item.current ? 'active' : '' }}">
 					{% if fn('get_post_meta', item.ID, '_menu_item_object_id', true ) == act_page_id %}
 						{% set link_ga_action = 'Act' %}
 					{% elseif fn('get_post_meta', item.ID, '_menu_item_object_id', true ) == explore_page_id %}
@@ -42,10 +42,17 @@
 					</a>
 
 					{% if item.children is not empty %}
-						<nav class='nav-submenu' data-menu={{ item.ID }}>
-							<ul data-menu={{ item.ID }} data-parent-menu={{ item.ID }}>
+						<nav class='nav-submenu'>
+							<ul>
 							{% for key,item in item.children %}
-								<li data-menu={{ item.ID }}>
+								<li>
+									{% if fn('get_post_meta', item.ID, '_menu_item_object_id', true ) == act_page_id %}
+										{% set link_ga_action = 'Act' %}
+									{% elseif fn('get_post_meta', item.ID, '_menu_item_object_id', true ) == explore_page_id %}
+										{% set link_ga_action = 'Explore' %}
+									{% else %}
+										{% set link_ga_action = item.title %}
+									{% endif %}
 									<a
 										class="nav-link"
 										href="{{ item.get_link }}"
