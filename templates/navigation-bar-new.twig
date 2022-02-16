@@ -68,6 +68,59 @@
 					{% endif %}
 				</li>
 				{% endfor %}
+
+				{% set donate_menu = donate_menu_items[0] ?? {} %}
+				<li class="nav-donate">
+					<a
+						class="btn btn-donate {{ donate_menu.children ? 'is-dropdown' : '' }}"
+						href="{{ donate_menu.link }}"
+						data-ga-category="Menu Navigation"
+						data-ga-action="Donate"
+						data-ga-label="{{ page_category }}">
+							{{ donate_menu.title }}
+							{# {% if donate_menu.children %}
+								<span class="chevron">List</span>
+							{% endif %} #}
+					</a>
+
+					{% if donate_menu.children is not empty %}
+						<nav class='nav-submenu'>
+							<ul>
+							{% for key,item in donate_menu.children %}
+								<li>
+									{% if fn('get_post_meta', item.ID, '_menu_item_object_id', true ) == act_page_id %}
+										{% set link_ga_action = 'Act' %}
+									{% elseif fn('get_post_meta', item.ID, '_menu_item_object_id', true ) == explore_page_id %}
+										{% set link_ga_action = 'Explore' %}
+									{% else %}
+										{% set link_ga_action = item.title %}
+									{% endif %}
+									<a
+										class="nav-link"
+										href="{{ item.get_link }}"
+										data-ga-category="Menu Navigation"
+										data-ga-action="{{ link_ga_action }}"
+										data-ga-label="{{ page_category }}">
+											{{ item.title }}
+									</a>
+								</li>
+							{% endfor %}
+							</ul>
+						</nav>
+					{% endif %}
+
+					{# {% if donate_menu.children %}
+						<ul class="donate-dropdown">
+							{% for key, child in donate_menu.children %}
+								<li>
+									<a href="{{ child.link }}">
+										{{ child.title }}
+									</a>
+								</li>
+							{% endfor %}
+						</ul>
+				</li>
+				{% endif %} #}
 			</ul>
 		</nav>
 

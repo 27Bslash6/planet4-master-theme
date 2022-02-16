@@ -1,3 +1,5 @@
+{% set donate_menu = donate_menu_items[0] ?? {} %}
+
 <div id="burger-menu">
   <button class="nav-menu-close" type="button"
     aria-label="{{ __( 'Close burger menu', 'planet4-master-theme' ) }}"
@@ -83,7 +85,54 @@
         {% endif %}
       </li>
       {% endfor %}
-    </ul>
+
+			{# Only applied to the Donate button #}
+			<li class="burger-menu-item {{ donate_menu.class }} {{ donate_menu == donate_menu.current ? 'active' : '' }}">
+        <div class='item-wrapper'>
+					<a
+						class="nav-link"
+						href="{{ donate_menu.get_link }}"
+						data-ga-category="Menu Navigation"
+						data-ga-action="Donate Menu"
+						data-ga-label="{{ page_category }}">
+							{{ donate_menu.title }}
+					</a>
+        	{% if donate_menu.children is not empty %}
+						<button class="collapsable-btn" data-target="accordion-menu-{{ donate_menu.id }}" aria-expanded="false" aria-controls="accordion-menu-{{ donate_menu.id }}" />
+        	{% endif %}
+				</div>
+        {% if donate_menu.children is not empty %}
+          <nav id="accordion-menu-{{ donate_menu.id }}" class="accordion-menu">
+            <ul>
+            {% for key,item in donate_menu.children %}
+              <li>
+                <a
+                  class="nav-link"
+                  href="{{ item.get_link }}"
+                  data-ga-category="Donate Menu"
+                  data-ga-action="{{ item.title }}"
+                  data-ga-label="{{ page_category }}">
+                    {{ item.title }}
+                </a>
+              </li>
+            {% endfor %}
+            </ul>
+          </nav>
+        {% endif %}
+      </li>
+		</ul>
   </nav>
+
+	<aside class="nav-donate-sticky">
+		<a
+			class="btn btn-donate"
+			href="{{ donate_menu.get_link }}"
+			data-ga-category="Menu Navigation"
+			data-ga-action="Donate Menu"
+			data-ga-label="{{ page_category }}">
+				{{ __( 'Make a donation', 'planet4-master-theme' ) }}
+		</a>
+
+	</aside>
 </div>
 <div class="top-navigation-overlay"></div>

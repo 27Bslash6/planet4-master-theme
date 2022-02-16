@@ -222,3 +222,15 @@
   width: calc(100% + 20px);
   z-index: 4;
 }
+
+.nav-donate-sticky {
+  position: absolute;
+  width: 100%;
+  padding: 0 24px;
+  bottom: 86px;
+  left: 0;
+
+  .btn-donate {
+    width: 100%;
+  }
+}
