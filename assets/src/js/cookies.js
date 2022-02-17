@@ -16,30 +16,28 @@ export const setupCookies = () => {
     dataLayer.push(arguments);
   }
 
-  const updateGoogleConsent = (key, granted) => {
+  const updateGoogleConsent = (capabilities) => {
     if (!ENABLE_GOOGLE_CONSENT_MODE) {
       return;
     }
 
-    gtag('consent', 'update', {
-      [key]: granted ? 'granted' : 'denied',
-    });
+    gtag('consent', 'update', capabilities);
     dataLayer.push({
       'event': 'updateConsent',
-      [key]: granted ? 'granted' : 'denied',
+      ...capabilities,
     });
   };
 
   const defaultGoogleConsent = () => {
     gtag('consent', 'default', {
       'ad_storage': 'denied',
-      ...ENABLE_ANALYTICAL_COOKIES && { 'analytics_storage': 'denied' },
+      ...ENABLE_ANALYTICAL_COOKIES && {'analytics_storage': 'denied'},
     });
 
     dataLayer.push({
       'event' : 'defaultConsent',
       'ad_storage': 'denied',
-      ...ENABLE_ANALYTICAL_COOKIES && { 'analytics_storage': 'denied' },
+      ...ENABLE_ANALYTICAL_COOKIES && {'analytics_storage': 'denied'},
     });
   };
 
@@ -83,10 +81,10 @@ export const setupCookies = () => {
 
     if (marketing_consent) {
       // If user consents, update on every page.
-      updateGoogleConsent('ad_storage', true);
-      if (ENABLE_ANALYTICAL_COOKIES) {
-        updateGoogleConsent('analytics_storage', true);
-      }
+      updateGoogleConsent({
+        'ad_storage': 'granted',
+        ...ENABLE_ANALYTICAL_COOKIES && {'analytics_storage': 'granted'}
+      });
     } else {
       // If user has not, default to denied on every page.
       defaultGoogleConsent();
@@ -126,10 +124,10 @@ export const setupCookies = () => {
     createCookie('gp_nro', nro, 30);
 
     // Grant ad storage and analytics storage if Google Consent Mode is enabled.
-    updateGoogleConsent('ad_storage', true);
-    if (ENABLE_ANALYTICAL_COOKIES) {
-      updateGoogleConsent('analytics_storage', true);
-    }
+    updateGoogleConsent({
+      'ad_storage': 'granted',
+      ...ENABLE_ANALYTICAL_COOKIES && {'analytics_storage': 'granted'}
+    });
 
     // DataLayer push event on cookies consent.
     dataLayer.push({
@@ -187,10 +185,10 @@ export const setupCookies = () => {
       }
 
       // Update ad storage and analytics storage if Google Consent Mode is enabled
-      updateGoogleConsent('ad_storage', marketingCookiesChecked);
-      if (ENABLE_ANALYTICAL_COOKIES) {
-        updateGoogleConsent('analytics_storage', analyticalCookiesChecked);
-      }
+      updateGoogleConsent({
+        'ad_storage': marketingCookiesChecked ? 'granted' : 'denied',
+        ...ENABLE_ANALYTICAL_COOKIES && {'analytics_storage': analyticalCookiesChecked ? 'granted' : 'denied'}
+      });
 
       dataLayer.push({
         'event' : 'updateConsent'
@@ -206,10 +204,10 @@ export const setupCookies = () => {
     createCookie('no_track', '1', 365);
 
     // Deny ad storage and analytics storage if Google Consent Mode is enabled.
-    updateGoogleConsent('ad_storage', false);
-    if (ENABLE_ANALYTICAL_COOKIES) {
-      updateGoogleConsent('analytics_storage', false);
-    }
+    updateGoogleConsent({
+      'ad_storage': 'denied',
+      ...ENABLE_ANALYTICAL_COOKIES && {'analytics_storage': 'denied'}
+    });
 
     dataLayer.push({
       'event' : 'updateConsent'
