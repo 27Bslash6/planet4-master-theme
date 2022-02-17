@@ -11,7 +11,7 @@
 		data-ga-label="{{ page_category }}"
 		aria-expanded="false"
 		data-bs-toggle="open"
-		data-bs-target="#burger-menu">
+		data-bs-target="#nav-main">
 		{{ 'menu'|svgicon|replace({'<svg': "<svg " ~ data_ga_attrs })|raw }}
 		<span class="visually-hidden">
 			{{ __( 'Menu', 'planet4-master-theme' ) }}
@@ -68,9 +68,18 @@
 					{% endif %}
 				</li>
 				{% endfor %}
+				<li class="nav-item nav-donate">
+					<a
+						class="btn btn-donate"
+						href="{{ donatelink }}"
+						data-ga-category="Menu Navigation"
+						data-ga-action="Donate"
+						data-ga-label="{{ page_category }}">
+							{{ donatetext }}
+					</a>
+				</li>
 			</ul>
 		</nav>
-
 		{% set search_icon = 'search'|svgicon %}
 		{% set search_input_id = 'search_input' %}
 		{% set data_ga_attrs = 'data-ga-category="Menu Navigation" data-ga-action="Search" data-ga-label="' ~ page_category ~ '"' %}
@@ -142,6 +151,15 @@
 				</ul>
 			</nav>
 		{% endif %}
+		<button class="nav-menu-close" type="button"
+			aria-label="{{ __( 'Close navigation menu', 'planet4-master-theme' ) }}"
+			aria-expanded="false"
+			data-bs-toggle="open"
+			data-bs-target="#nav-main">
+			<span class="visually-hidden">
+				{{ __( 'Close navigation menu', 'planet4-master-theme' ) }}
+			</span>
+		</button>
 	</div>
 	<div class="nav-search-toggle-container medium-and-less">
 		<button class="nav-search-toggle" type="button"
@@ -178,6 +196,6 @@
 		</nav>
 	</div>
 	{% endif %}
-	{% include 'burger-menu.twig' %}
+	<div class="top-navigation-overlay"></div>
 	{% include 'country_selector_banner.twig' ignore missing %}
 </section>

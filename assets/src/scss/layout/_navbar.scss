@@ -83,22 +83,107 @@ $navbar-default-height: 60px;
 
 #nav-main {
   display: flex;
-  flex-grow: 1;
 
   @include medium-and-less {
-    display: none;
+    flex-direction: column-reverse;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 99;
+
+    &.open {
+      inset-inline-start: 0;
+      transition: inset-inline-start 0.2s ease-out;
+
+      @supports not (inset-inline-start: 0) {
+        transform: translateX(0);
+        transition: transform 0.2s ease-out;
+
+        html[dir="rtl"] & {
+          transform: translateX(0);
+        }
+      }
+
+      ~ .top-navigation-overlay {
+        display: block;
+      }
+    }
+
+    .admin-bar & {
+      padding-bottom: 46px;
+      top: 46px;
+
+      @media (min-width: 783px) {
+        padding-bottom: 32px;
+        top: 32px;
+      }
+    }
+  }
+
+  @include small-and-less {
+    width: 100vw;
+    inset-inline-start: -100vw;
+
+    @supports not (inset-inline-start: -100vw) {
+      transform: translateX(-100vw);
+      transition: transform 0.2s ease-out;
+
+      html[dir="rtl"] & {
+        transform: translateX(100vw);
+      }
+    }
+
+    &.open {
+      @supports not (inset-inline-start: 0) {
+        transform: translateX(0);
+        transition: transform 0.2s ease-out;
+
+        html[dir="rtl"] & {
+          transform: translateX(0);
+        }
+      }
+    }
+  }
+
+  @include small-to-large {
+    inset-inline-start: -400px;
+    transition: inset-inline-start 0.2s ease-in;
+    width: 400px;
+
+    @supports not (inset-inline-start: -400px) {
+      transform: translateX(-400px);
+      transition: transform 0.2s ease-in;
+
+      html[dir="rtl"] & {
+        transform: translateX(400px);
+      }
+    }
+  }
+
+  @include large-and-up {
+    flex-grow: 1;
+    width: auto;
   }
 }
 
 .nav-menu {
   background: var(--top-navigation--background, $dark-blue);
+  height: 100%;
   top: 0;
   width: auto;
   z-index: 4;
 
-  flex-grow: 1;
-  display: flex;
-  align-items: flex-end;
+  @include medium-and-less {
+    display: block;
+    overflow-y: auto;
+  }
+
+  @include large-and-up {
+    background: inherit;
+    display: flex;
+    flex-grow: 1;
+    height: auto;
+  }
 
   ul {
     list-style-type: none;
@@ -122,19 +207,6 @@ $navbar-default-height: 60px;
   color: inherit;
   font-size: $font-base-size;
   font-weight: 700;
-  position: relative;
-
-  &:hover {
-    &::after {
-      transition: all 0.1s ease-in;
-      width: 100%;
-      left: 0;
-    }
-
-    .nav-submenu {
-      display: flex;
-    }
-  }
 
   @include large-and-up {
     line-height: $menu-height;
@@ -220,11 +292,6 @@ a.nav-link {
   @include large-and-up {
     --nav-link-active--text-decoration-line: none;
   }
-
-  @include small-and-less {
-    display: flex;
-    justify-content: space-between;
-  }
 }
 
 // Underline animation with border-bottom
@@ -247,79 +314,32 @@ a.nav-link:hover:before,
   }
 }
 
-.nav-submenu {
-  padding-top: 8px;
-  z-index: 999;
-  position: fixed;
-  min-width: 193px;
-  display: none;
+.nav-menu-close {
+  background-color: var(--top-navigation--color, $white);
+  border: none;
+  display: block;
+  height: 68px;
+  inset-inline-end: 0;
+  mask: url("../../images/cross.svg") 50% 50%/16px 16px no-repeat;
+  position: absolute;
+  top: 0;
+  width: 68px;
+  z-index: 5;
 
-  ul {
-    padding: 16px 0;
-    flex-direction: column;
-    height: fit-content;
-    background: $white;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
-    border-radius: 4px;
-  }
+  @include medium-and-less {
+    @supports not (inset-inline-end: 0) {
+      right: 0;
+      left: auto;
 
-  li {
-    width: 100%;
-    text-align: left;
-    white-space: nowrap;
-    color: $grey-80;
-
-  }
-
-  a {
-    text-decoration: none;
-    color: $grey-80;
-    padding: 14px 24px;
-
-    &:hover {
-      text-decoration: inherit;
-      color: $grey-80;
-      background: #ECECEC;
+      html[dir="rtl"] & {
+        left: 0;
+        right: auto;
+      }
     }
   }
 
-  &.show {
-    display: flex;
-    position: fixed;
-    z-index: 999;
-
-    a {
-      color: $grey-80;
-    }
-  }
-
-  &.scrolleable {
-    height: 320px;
-    overflow-y: auto;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
-
-    border-bottom-left-radius: 4px;
-    border-bottom-right-radius: 4px;
-  }
-}
-
-.nav-subitem {
-  padding: 14px 24px;
-  width: 100%;
-  text-align: left;
-
-  .nav-link {
-    text-decoration: none;
-    color: $grey-80;
-
-    &:hover {
-      text-decoration: inherit;
-      color: inherit;
-    }
-  }
-
-  &:hover {
-    background: #ECECEC;
+  @include large-and-up {
+    display: none;
   }
 }
 
@@ -335,6 +355,20 @@ a.nav-link:hover:before,
   }
 }
 
+.top-navigation-overlay {
+  display: none;
+  background: $black;
+  height: 100%;
+  opacity: 0.5;
+  overflow: hidden;
+  overflow-y: scroll;
+  pointer-events: all;
+  position: fixed;
+  top: 0;
+  width: calc(100% + 20px);
+  z-index: 4;
+}
+
 .no-scroll-nav-open {
   @include medium-and-less {
     overflow-y: hidden;
@@ -348,4 +382,3 @@ a.nav-link:hover:before,
 @import "navbar/languages";
 @import "navbar/search";
 @import "navbar/mobile";
-@import "navbar/burger-menu";
