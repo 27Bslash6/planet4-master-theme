@@ -11,7 +11,7 @@ jQuery(function($) {
   const p4_data = window.p4_data || {};
   const wp = window.wp || {};
 
-  if ('undefined' === wp.api) {
+  if (wp.api === 'undefined') {
     return;
   }
 
@@ -19,10 +19,10 @@ jQuery(function($) {
     let filters = {};
     const from = $('#from').val();
     const to = $('#to').val();
-    if ('' !== from) {
+    if (from !== '') {
       filters.after = from + 'T00:00:00';
     }
-    if ('' !== to) {
+    if (to !== '') {
       filters.before = to + 'T23:59:59';
     }
 
